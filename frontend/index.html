@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typeahead Search - Portfolio</title>
+    <!-- Modern Clean Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Product+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Subtle Light Mesh Gradient for Liquid Glass effect -->
+    <div class="light-glass-bg"></div>
+
+    <div class="app-container">
+        
+        <!-- Top Half: Classic Search Experience -->
+        <main class="search-main">
+            
+            <div class="logo">
+                <span class="c-blue">T</span><span class="c-red">y</span><span class="c-yellow">p</span><span class="c-blue">e</span><span class="c-green">a</span><span class="c-red">h</span><span class="c-blue">e</span><span class="c-yellow">a</span><span class="c-green">d</span>
+            </div>
+
+            <div class="search-box-container">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        title="Search"
+                        autocomplete="off"
+                        spellcheck="false"
+                        autofocus
+                    />
+                    <div id="loading-indicator" class="loading-spinner hidden"></div>
+                    <button id="clear-btn" class="clear-button hidden" aria-label="Clear">
+                        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Autocomplete Dropdown List -->
+                <div id="suggestions-dropdown" class="suggestions-dropdown hidden">
+                    <ul id="suggestions-list" class="suggestions-list"></ul>
+                </div>
+            </div>
+
+            <div class="search-actions">
+                <button id="search-btn" class="btn btn-secondary">Google Search</button>
+                <button id="lucky-btn" class="btn btn-secondary">I'm Feeling Lucky</button>
+            </div>
+
+            <!-- New Trending Searches Area -->
+            <div class="trending-showcase">
+                <div class="trending-header">
+                    <span class="flame-icon">🔥</span> Live Trending Searches
+                </div>
+                <div id="trending-tags" class="trending-chips">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+            
+            <div id="status-toast" class="toast hidden"></div>
+        </main>
+        
+        <!-- Bottom Half: Engineering Showcase -->
+        <section class="architecture-showcase">
+            <h2 class="showcase-title">⚙️ Under the Hood: Live System Architecture</h2>
+            
+            <div class="architecture-grid">
+                
+                <!-- Card A: Hash Router -->
+                <div class="arch-card glass">
+                    <h3 class="card-title">Consistent Hash Router</h3>
+                    <p class="card-desc">Distributes prefix keys deterministically across 3 nodes to eliminate single points of failure.</p>
+                    
+                    <div class="card-content">
+                        <div class="router-row">
+                            <span class="label">Query Hash Prefix:</span>
+                            <span id="debug-prefix" class="value code-val">-</span>
+                        </div>
+                        <div class="router-row">
+                            <span class="label">Mapped Cache Node:</span>
+                            <span id="debug-node" class="value node-badge">-</span>
+                        </div>
+                        <div class="router-row">
+                            <span class="label">Cache Lookup Status:</span>
+                            <span id="debug-status" class="value status-badge">-</span>
+                        </div>
+                    </div>
+
+                    <div class="ring-visualizer">
+                        <div class="node-indicator node-a" id="indicator-redis-1"><span class="dot"></span> redis-1 (6379)</div>
+                        <div class="node-indicator node-b" id="indicator-redis-2"><span class="dot"></span> redis-2 (6380)</div>
+                        <div class="node-indicator node-c" id="indicator-redis-3"><span class="dot"></span> redis-3 (6381)</div>
+                    </div>
+                </div>
+
+                <!-- Card B: Distributed Cache -->
+                <div class="arch-card glass">
+                    <h3 class="card-title">Distributed Cache Performance</h3>
+                    <p class="card-desc">Serves 99% of requests directly from in-memory Redis, completely bypassing the MySQL database.</p>
+                    
+                    <div class="card-content metrics-center">
+                        <div class="huge-metric" id="metric-hit-rate">0.0%</div>
+                        <div class="metric-subtitle">Global Cache Hit Rate</div>
+                        
+                        <div class="metrics-split">
+                            <div class="split-col">
+                                <span class="split-val hit-color" id="metric-hits">0</span>
+                                <span class="split-label">Total Hits</span>
+                            </div>
+                            <div class="split-col">
+                                <span class="split-val miss-color" id="metric-misses">0</span>
+                                <span class="split-label">Total Misses</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card C: Write Buffer -->
+                <div class="arch-card glass">
+                    <h3 class="card-title">Asynchronous Write Buffer</h3>
+                    <p class="card-desc">Search submissions are buffered in-memory and flushed in background batches to save Database IOPS.</p>
+                    
+                    <div class="card-content buffer-center">
+                        <div class="buffer-label">
+                            <span>Pending MySQL Writes</span>
+                            <span id="buffer-ratio" class="buffer-count">0 / 100</span>
+                        </div>
+                        <div class="progress-track large-track">
+                            <div id="buffer-progress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="buffer-note">Flushes automatically every 10 seconds or when the queue hits 100 queries.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  redis-a:
+    image: redis:7-alpine
+    container_name: typeahead-redis-a
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no
+
+  redis-b:
+    image: redis:7-alpine
+    container_name: typeahead-redis-b
+    ports:
+      - "6380:6380"
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no
+
+  redis-c:
+    image: redis:7-alpine
+    container_name: typeahead-redis-c
+    ports:
+      - "6381:6381"
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no
