@@ -9,9 +9,6 @@
 
 Lexora is a real-time search autocomplete and typeahead suggestion system. It combines a vanilla JavaScript frontend, a FastAPI backend, MySQL persistence, Redis caching, consistent hashing, and write-behind buffering to serve fast search suggestions while reducing database writes.
 
-## Screenshot
-
-![Search Suggestions UI](image.png)
 
 ## Features
 

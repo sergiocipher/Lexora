@@ -1,6 +1,6 @@
 /* Design Tokens & Theme Configuration */
 :root {
-    --bg-base: #fafbfc; /* Slightly off-white to make glass pop */
+    --bg-base: #010911; /* Slightly off-white to make glass pop */
     --text-primary: #202124;
     --text-secondary: #5f6368;
     --border-color: #dfe1e5;
